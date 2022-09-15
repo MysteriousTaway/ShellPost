@@ -1,2 +1,6 @@
-☐ Write body constructor
-☐ Test WebsiteConstructor.psm1
+✔ Write body constructor @done (15/09/2022, 19:39:21)
+✔ Construct body with values @done (15/09/2022, 19:39:24)
+✔ add one piece of header then all bodies and then one footer, put into oven and bake for 10 minutes at 180deg C @done (15/09/2022, 19:39:27)
+☐ Save final html to files
+✔ Test WebsiteConstructor.psm1 @done (15/09/2022, 20:10:21)
+☐ Fix file load problem thingy >:(
