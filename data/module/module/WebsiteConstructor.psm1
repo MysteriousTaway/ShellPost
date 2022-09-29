@@ -18,6 +18,8 @@ function ConstructHTML {
         # Where is the result is supposed to be saved:
         [String] $Final_Page_Location
     )
+    write-host $PSScriptRoot
+    write-host $JS_Template_Path
     #Load templates from folder:
     [String] $js = GetFromFile -RawUrl $JS_Template_Path -Surround "script"
     [String] $css = GetFromFile -RawUrl $CSS_Template_Path -Surround "style"
@@ -52,7 +54,7 @@ function ConstructFinalBody{
 
 function GetFromFile {
     param ($RawUrl, $Surround)
-    $raw = Get-Content -Raw $location
+    $raw = Get-Content -Raw $RawUrl
     if($Surround -ne "") {
         $return = "<" + $Surround + ">" + $raw + "</" + $Surround + ">"
     } else {
