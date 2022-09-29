@@ -16,35 +16,33 @@ function ConstructHTML {
         # What will this^ do ? it will find every word dog and replace it with frog
         [string] $HTML_Body_Regex,
         # Where is the result is supposed to be saved:
-        [String] $Final_Page_Location
+        [String] $Final_Page_Location,
+        [String[]] $Values
     )
-    write-host $PSScriptRoot
-    write-host $JS_Template_Path
     #Load templates from folder:
     [String] $js = GetFromFile -RawUrl $JS_Template_Path -Surround "script"
     [String] $css = GetFromFile -RawUrl $CSS_Template_Path -Surround "style"
     [String] $html_header = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
-    [String] $html_body = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
-    [String] $html_footer = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
+    [String] $html_body = GetFromFile -RawUrl $HTML_Body_Template_Path -Surround ""
+    [String] $html_footer = GetFromFile -RawUrl $HTML_Footer_Template_Path -Surround ""
     # Construct final
-    $FinalBody = ConstructFinalBody  -js $js -css $css -HeaderTemplate $html_header -BodyTemplate $html_body -FooterTemplate $html_footer -RegexString $HTML_Body_Regex
+    $FinalBody = ConstructFinalBody  -js $js -css $css -HeaderTemplate $html_header -BodyTemplate $html_body -FooterTemplate $html_footer -Values $Values
     #TODO: REMOVE THIS!!:
     return $FinalBody
     #TODO: Add file saver if this shit works
 }
 
 function ConstructFinalBody{
-    param($js,$css,$HeaderTemplate,$BodyTemplate,$FooterTemplate,$RegexString)
+    param($js,$css,$HeaderTemplate,$BodyTemplate,$FooterTemplate,$Values)
     # get number of bodies
     [String] $Final
-    [int] $NumberOfPosts = CountCharacters -String $HTML_Body_Regex -Char ";"
+    #[int] $NumberOfPosts = CountCharacters -String $HTML_Body_Regex -Char ";"
     [String[]] $Bodies
-    # Replaces name keywords with values and puts them together ... POWERSHELL PRE-PROCESSOR BABYYYYY!!
-    [String[]] $Names = ($RegexString -split "(?i).*?Name=`"(.*?)`"")
-    [String[]] $Values = ($RegexString -split "(?i).*?Value=`"(.*?)`"")
-    for ($i = 0; $i -lt $Names.Count; $i++) {
-        [String] $rx = "(?i).*?(" + $Names[$i] + ").*?"
-        [String] $add = $BodyTemplate -replace $rx, $Values[$i]
+    # Iterates over array of names and values and replaces each name with value.
+    Write-Host $Values
+    # TODO: Or at least it should KEKW
+    for ($i = 0; $i -lt $Values.Count; $i = $i + 2) {
+        [String] $add = $BodyTemplate -replace $Values[$i], $Values[$i+1]
         $Bodies = $Bodies + $add
     }
     # Put them together :D

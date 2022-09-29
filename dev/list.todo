@@ -1,8 +1,14 @@
 ✔ Write body constructor @done (15/09/2022, 19:39:21)
 ✔ Construct body with values @done (15/09/2022, 19:39:24)
 ✔ add one piece of header then all bodies and then one footer, put into oven and bake for 10 minutes at 180deg C @done (15/09/2022, 19:39:27)
-☐ Save final html to files
 ✔ Test WebsiteConstructor.psm1 @done (15/09/2022, 20:10:21)
-☐ Fix file load problem thingy >:(
-☐ Create installer for dependencies! 
-    ☐ Test Installer.ps1 
+✔ Fix file load problem thingy >:( @done (29/09/2022, 21:54:41)
+✔ Create installer for dependencies! @done (29/09/2022, 21:54:46)
+☐ Test Installer.ps1 
+☐ Save final html to files
+☐ Load pre-baked HTML files from folder and server them to "customers" (Users)
+☐ Remove Return from WebsiteConstructor
+✔ BUG: WebsiteConstructor is repeating header and not body. @done (29/09/2022, 22:17:37)
+✔ BUG: WebsiteConstructor RegexString doesn't affect returned body! @done (29/09/2022, 23:17:07)
+✔ BUG: web is not displaying body @done (29/09/2022, 23:36:55)
+☐ Load website components from json
