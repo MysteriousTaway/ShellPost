@@ -11,4 +11,6 @@
 ✔ BUG: WebsiteConstructor is repeating header and not body. @done (29/09/2022, 22:17:37)
 ✔ BUG: WebsiteConstructor RegexString doesn't affect returned body! @done (29/09/2022, 23:17:07)
 ✔ BUG: web is not displaying body @done (29/09/2022, 23:36:55)
-☐ Load website components from json
+✔ Write Manifest.json @done (30/09/2022, 22:36:37)
+✔ BUG: For some reason the server doesnt start @done (30/09/2022, 22:35:52)(Fixed by restarting VS Code ... the fuck ? XD)
+☐ Read json and manage the website in RequestHandler

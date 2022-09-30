@@ -1,0 +1,40 @@
+{
+    "Context":{
+        "Main":"Multi",
+        "Upload":"Single",
+        "About":"Single",
+        "Taskkill":"Single"
+    },
+
+    "Page":{
+        "Single":{
+            "Upload":{
+                "HTML":"",
+                "CSS":"",
+                "JS":""
+            },
+    
+            "About":{
+                "HTML":"",
+                "CSS":"",
+                "JS":""
+            },
+
+            "Taskkill":{
+                "HTML":"",
+                "CSS":"",
+                "JS":""
+            }
+        },
+    
+        "Multi":{
+            "Main":{
+                "HTML_HEADER":"data/templates/Main/MainHeader.html",
+                "HTML_BODY":"data/templates/Main/MainBody.html",
+                "HTML_FOOTER":"data/templates/Main/MainFooter.html",
+                "CSS":"data/templates/Main/Main.css",
+                "JS":"data/templates/Main/Main.js"
+            }
+        }
+    }
+}
