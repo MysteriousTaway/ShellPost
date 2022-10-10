@@ -5,6 +5,9 @@
         "About":"Single",
         "Taskkill":"Single"
     },
+    "Location":{
+        "Main":"data/Page/Main/"
+    },
 
     "Page":{
         "Single":{
@@ -29,9 +32,7 @@
     
         "Multi":{
             "Main":{
-                "HTML_HEADER":"data/templates/Main/MainHeader.html",
-                "HTML_BODY":"data/templates/Main/MainBody.html",
-                "HTML_FOOTER":"data/templates/Main/MainFooter.html",
+                "HTML":"data/templates/Main/Main.html",
                 "CSS":"data/templates/Main/Main.css",
                 "JS":"data/templates/Main/Main.js"
             }

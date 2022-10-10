@@ -6,8 +6,7 @@ Import-Module ".\data\module\manifest\RequestHandler.psd1" -Force
 # Import manifest:
 $configJson = Get-Content "data/manifest.json"
 # Convert to object
-$configObject = $configJson |ConvertFrom-Json
-
+$configObject = $configJson | ConvertFrom-Json
 $run = $true
 $ip = "127.0.0.1"
 $port = "8080"
@@ -15,15 +14,13 @@ $port = "8080"
 # Http Server
 $http = [System.Net.HttpListener]::new()
 # Hostname and port to listen on
-$http.Prefixes.Add("http://" + $ip + ":" + $port + "/")
+$http.Prefixes.Add("http://$($ip):$($port)/")
 # Start the Http Server 
 $http.Start()
 
-# INFINTE LOOP
+# INFINITE LOOP
 # Used to listen for requests
 while ($run) {
-    # When a request is made in a web browser the GetContext() method will return a request object
-    # Our route examples below will use the request object properties to decide how to respond
     $context = $http.GetContext()
     # http://127.0.0.1/
     if ($context.Request.HttpMethod -eq 'GET' -and $context.Request.RawUrl -eq '/') {
@@ -31,12 +28,12 @@ while ($run) {
         # We can log the request to the terminal
         write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
         
-        [string]$html = 
+        [string]$html = HandleGET -RawURL $context.Request.RawUrl -jsonManifest $configObject
         
-        #resposed to the request
-        $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # convert htmtl to bytes
+        #responded to the request
+        $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # convert html to bytes
         $context.Response.ContentLength64 = $buffer.Length
-        $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) #stream to broswer
+        $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) #stream to browser
         $context.Response.OutputStream.Close() # close the response
     }
 
@@ -52,9 +49,9 @@ while ($run) {
     #     Write-Host $FormContent -f 'Green'
     # 
     #     # the html/data
-    #     [string]$html = "<h1>A Powershell Webserver</h1><p>Post Successful!</p>" 
+    #     [string]$html = "<h1>A Powershell Web server</h1><p>Post Successful!</p>" 
     # 
-    #     #resposed to the request
+    #     #responded to the request
     #     $buffer = [System.Text.Encoding]::UTF8.GetBytes($html)
     #     $context.Response.ContentLength64 = $buffer.Length
     #     $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)

@@ -2,51 +2,74 @@ function ConstructHTML {
     [CmdletBinding()]
     param(
         # Style and functionality (Location):
+        [Parameter(Mandatory=$true)]
         [String] $JS_Template_Path,
+        [Parameter(Mandatory=$true)]
         [String] $CSS_Template_Path,
-        # HTML parts to be loaded:
-        [String] $HTML_Header_Template_Path,
-        [String] $HTML_Body_Template_Path,
-        [String] $HTML_Footer_Template_Path,
-        # Modifiers:
-        # Number of posts defines how many times the body should be repeated in the final webpage
-        # Deprecated: (Reason: Can count number of posts by counting the ; char in $HTML_Body_Regex)
-        #[int] $NumberOfPosts,
-        # Example: Name="dog",Value="frog";
-        # What will this^ do ? it will find every word dog and replace it with frog
-        [string] $HTML_Body_Regex,
         # Where is the result is supposed to be saved:
+        [Parameter(Mandatory=$true)]
         [String] $Final_Page_Location,
+        [Parameter(Mandatory=$true)]
+        [String] $PageType,
+        # HTML parts to be loaded:
+        #TODO: Make it into one param and regex it:
+        #[String] $HTML_Header_Template_Path,
+        #[String] $HTML_Body_Template_Path,
+        #[String] $HTML_Footer_Template_Path,
+        # HTML file location:
+        [Parameter(Mandatory=$true)]
+        [String] $HTML_Template_Path,
+        # Modifiers:
+        # Values to be replaced in multi-mode for main page:
         [String[]] $Values
     )
     #Load templates from folder:
     [String] $js = GetFromFile -RawUrl $JS_Template_Path -Surround "script"
     [String] $css = GetFromFile -RawUrl $CSS_Template_Path -Surround "style"
-    [String] $html_header = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
-    [String] $html_body = GetFromFile -RawUrl $HTML_Body_Template_Path -Surround ""
-    [String] $html_footer = GetFromFile -RawUrl $HTML_Footer_Template_Path -Surround ""
-    # Construct final
-    $FinalBody = ConstructFinalBody  -js $js -css $css -HeaderTemplate $html_header -BodyTemplate $html_body -FooterTemplate $html_footer -Values $Values
-    #TODO: REMOVE THIS!!:
-    return $FinalBody
-    #TODO: Add file saver if this shit works
+    [String] $html = GetFromFile -RawUrl $HTML_Template_Path -Surround ""
+    #[String] $html_header = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
+    #[String] $html_body = GetFromFile -RawUrl $HTML_Body_Template_Path -Surround ""
+    #[String] $html_footer = GetFromFile -RawUrl $HTML_Footer_Template_Path -Surround ""
+    if ($PageType -eq "Multi") {
+        # Construct final multi
+        [String] $FinalBody = ConstructFinalBody_Multi  -js $js -css $css -HTMLTemplate $html -Values $Values
+    } else {
+        # Load main page:
+        [String] $FinalBody = GetFromFile -RawUrl $HTML_Template_Path -Surround ""
+    }
+    
+    # Save to file
+    $FinalBody | Out-File -FilePath $Final_Page_Location -Encoding utf8 -Verbose 
 }
 
-function ConstructFinalBody{
-    param($js,$css,$HeaderTemplate,$BodyTemplate,$FooterTemplate,$Values)
-    # get number of bodies
-    [String] $Final
-    #[int] $NumberOfPosts = CountCharacters -String $HTML_Body_Regex -Char ";"
-    [String[]] $Bodies
-    # Iterates over array of names and values and replaces each name with value.
-    Write-Host $Values
-    # TODO: Or at least it should KEKW
+function ConstructFinalBody_Multi{
+    param($js,$css,$HTMLTemplate,$Values)
+    ## get number of bodies
+    #[String[]] $Bodies
+    ## Iterates over array of names and values and replaces each name with value.
+    ## TODO: Or at least it should KEKW
+    #for ($i = 0; $i -lt $Values.Count; $i = $i + 2) {
+    #    [String] $add = $BodyTemplate -replace $Values[$i], $Values[$i+1]
+    #    $Bodies = $Bodies + $add
+    #}
+    ## Put them together :D
+    #[String] $return = $js + $css + $HeaderTemplate + [String]$Bodies + $FooterTemplate
+
+
+    # Split html template into header, body and footer using regex
+    [String[]] $HTMLTemplateSplit = $HTMLTemplate -split "<!--SPLIT-->"
+    Write-Host "[DEBUG] HTMLTemplateSplit 0: $($HTMLTemplateSplit[0])" -ForegroundColor Yellow
+    Write-Host "[DEBUG] HTMLTemplateSplit 1: $($HTMLTemplateSplit[1])" -ForegroundColor Yellow
+    Write-Host "[DEBUG] HTMLTemplateSplit 2: $($HTMLTemplateSplit[2])" -ForegroundColor Yellow
+    # Replace values in body from values array
     for ($i = 0; $i -lt $Values.Count; $i = $i + 2) {
-        [String] $add = $BodyTemplate -replace $Values[$i], $Values[$i+1]
+        [String] $add = $HTMLTemplateSplit[1] -replace $Values[$i], $Values[$i+1]
+        # Verbose debug
+        Write-Host "[DEBUG] Replaced $($Values[$i]) with $($Values[$i+1])" -ForegroundColor Yellow
         $Bodies = $Bodies + $add
     }
-    # Put them together :D
-    [String] $return = $js + $css + $HeaderTemplate + [String]$Bodies + $FooterTemplate
+    [String] $return = $js + $css + $HTMLTemplateSplit[0] + [String]$Bodies + $HTMLTemplateSplit[2]
+    Write-Host "[DEBUG] Final html: $return" -ForegroundColor Yellow
     return $return
 }
 
@@ -61,9 +84,9 @@ function GetFromFile {
     return $return
 }
 
-function CountCharacters {
-    param ($String, $Char)
-    return ($String.ToCharArray() | Where-Object {$_ -eq $Char} | Measure-Object).Count
-}
+#function CountCharacters {
+#    param ($String, $Char)
+#    return ($String.ToCharArray() | Where-Object {$_ -eq $Char} | Measure-Object).Count
+#}
 
 Export-ModuleMember -Function ConstructHTML
