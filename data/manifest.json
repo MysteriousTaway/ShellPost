@@ -5,8 +5,23 @@
         "About":"Single",
         "Taskkill":"Single"
     },
+    
     "Location":{
-        "Main":"data/Page/Main/"
+        "Main":"data/Page/Main/main.html"
+    },
+
+    "SQL":{
+        "Server":"localhost:3306",
+        "Database":"database",
+        "Username":"root",
+        "Password":""
+    },
+
+    "SQL_test":{
+        "Server":"localhost:3306",
+        "Database":"database_test",
+        "Username":"root",
+        "Password":" "
     },
 
     "Page":{

@@ -12,10 +12,6 @@ function ConstructHTML {
         [Parameter(Mandatory=$true)]
         [String] $PageType,
         # HTML parts to be loaded:
-        #TODO: Make it into one param and regex it:
-        #[String] $HTML_Header_Template_Path,
-        #[String] $HTML_Body_Template_Path,
-        #[String] $HTML_Footer_Template_Path,
         # HTML file location:
         [Parameter(Mandatory=$true)]
         [String] $HTML_Template_Path,
@@ -44,32 +40,17 @@ function ConstructHTML {
 
 function ConstructFinalBody_Multi{
     param($js,$css,$HTMLTemplate,$Values)
-    ## get number of bodies
-    #[String[]] $Bodies
-    ## Iterates over array of names and values and replaces each name with value.
-    ## TODO: Or at least it should KEKW
-    #for ($i = 0; $i -lt $Values.Count; $i = $i + 2) {
-    #    [String] $add = $BodyTemplate -replace $Values[$i], $Values[$i+1]
-    #    $Bodies = $Bodies + $add
-    #}
-    ## Put them together :D
-    #[String] $return = $js + $css + $HeaderTemplate + [String]$Bodies + $FooterTemplate
-
-
     # Split html template into header, body and footer using regex
     [String[]] $HTMLTemplateSplit = $HTMLTemplate -split "<!--SPLIT-->"
-    Write-Host "[DEBUG] HTMLTemplateSplit 0: $($HTMLTemplateSplit[0])" -ForegroundColor Yellow
-    Write-Host "[DEBUG] HTMLTemplateSplit 1: $($HTMLTemplateSplit[1])" -ForegroundColor Yellow
-    Write-Host "[DEBUG] HTMLTemplateSplit 2: $($HTMLTemplateSplit[2])" -ForegroundColor Yellow
     # Replace values in body from values array
     for ($i = 0; $i -lt $Values.Count; $i = $i + 2) {
         [String] $add = $HTMLTemplateSplit[1] -replace $Values[$i], $Values[$i+1]
         # Verbose debug
-        Write-Host "[DEBUG] Replaced $($Values[$i]) with $($Values[$i+1])" -ForegroundColor Yellow
+        Write-Host "[DEBUG: WebsiteConstructor, ConstructFinalBody_Multi] Replaced $($Values[$i]) with $($Values[$i+1])" -ForegroundColor Yellow
         $Bodies = $Bodies + $add
     }
     [String] $return = $js + $css + $HTMLTemplateSplit[0] + [String]$Bodies + $HTMLTemplateSplit[2]
-    Write-Host "[DEBUG] Final html: $return" -ForegroundColor Yellow
+    # Write-Host "[DEBUG: WebsiteConstructor, ConstructFinalBody_Multi] Final html: $return" -ForegroundColor Yellow
     return $return
 }
 
