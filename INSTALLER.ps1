@@ -1,3 +1,11 @@
+write-host Associating .ps1 files with PowerShell
+cmd.exe /c "ftype Microsoft.PowerShellScript.1=`"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`" `"%1`""
+write-host Downloading scoop!
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+write-host Installing scoop!
+irm get.scoop.sh | iex
+write-host Installing git!
+scoop install git
 # Installs required components automatically
 # Update all already downloaded:
 Write-Host Updating scoop! -BackgroundColor Yellow -ForegroundColor Black

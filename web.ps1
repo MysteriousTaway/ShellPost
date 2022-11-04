@@ -11,6 +11,7 @@ $run = $true
 $ip = "127.0.0.1"
 $port = "8080"
 # ───── ❝ WEB SERVER START ❞ ─────
+Write-Host "-=[STARTED WEB SERVER]=-" -ForegroundColor Yellow
 # Http Server
 $http = [System.Net.HttpListener]::new()
 # Hostname and port to listen on
@@ -42,13 +43,27 @@ while ($run) {
     
         # We can log the request to the terminal
         write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
-        Write-Host $FormContent -f 'Green'
-
-        $Title = $FormContent.Split("&")[0].Split("=")[1]
-        $Username = $FormContent.Split("&")[1].Split("=")[1]
-        $Text = $FormContent.Split("&")[2].Split("=")[1]
+        #Write-Host $FormContent -f 'Green'
+        # Get username from form:
+        $Regex = [Regex]::new("(?<=title=)(.*)(?=&username)")           
+        $Match = $Regex.Match($FormContent)           
+        if($Match.Success) {           
+            $Title = $Match.Value           
+        }
+        $Regex = [Regex]::new("(?<=username=)(.*)(?=&text)")           
+        $Match = $Regex.Match($FormContent)           
+        if($Match.Success) {           
+            $Username = $Match.Value           
+        }
+        # Get password from form:
+        $Regex = [Regex]::new("(?<=&text=)(.*)")
+        $Match = $Regex.Match($FormContent)           
+        if($Match.Success) {           
+            $Text = $Match.Value
+        }
+        
         # the html/data
-        [string]$html = ConstructHTML -Title $Title -Username $Username -Text $Text
+        [string]$html = ConstructHTML -Title $Title -Username $Username -Text $Text -ENV "$($PSScriptRoot)\"
     
         #responded to the request
         $buffer = [System.Text.Encoding]::UTF8.GetBytes($html)
@@ -63,7 +78,7 @@ while ($run) {
         # We can log the request to the terminal
         write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
         
-        [string]$html = "<h1> SERVER SHUTDOWN </h1>"
+        [string]$html = "<style>h1{text-align: center;}</style><html><h1> SERVER STOPPED</h1></html>"
         
         #responded to the request
         $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # convert html to bytes
@@ -72,5 +87,6 @@ while ($run) {
         $context.Response.OutputStream.Close() # close the response
     }
 }
+Write-Host "-=[STOPPED WEB SERVER]=-" -ForegroundColor Yellow
 # stop the server
 $http.Stop()
