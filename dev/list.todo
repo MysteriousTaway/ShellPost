@@ -16,8 +16,8 @@
 ☐ Read json and manage the website in RequestHandler
 ✔ Make [WebsiteConstructor; ConstructHTML] input a single HTML template location and split it via regex to header, body and a footer @done (10/10/2022, 19:07:09)
 ✔ BUG: [WebsiteConstructor; ConstructHTML] does not regex body string. it outputs one "cow" value instad of what is supposed to be replaced @done (10/10/2022, 18:52:51)
-☐ BUG: in unit_test.ps1 when importing all modules it does not recognise ConstructHTML as a function or a cmdlet
-☐ BUG: [RequestHandler; HandleGET] Can't find baked website
+✘ BUG: in unit_test.ps1 when importing all modules it does not recognise ConstructHTML as a function or a cmdlet @cancelled (01/11/2022, 21:43:21)
+✘ BUG: [RequestHandler; HandleGET] Can't find baked website @cancelled (01/11/2022, 21:43:30)
 ☐ Handle POST requests
 ☐ Clean up POST requests from possible SQL and XSS injection attacks
 ☐ make a better looking website
