@@ -1,33 +1,31 @@
 function ConstructHTML {
     [CmdletBinding()]
     param(
-        # Style and functionality (Location):
-        [String] $JS_Template_Path,
-        [String] $CSS_Template_Path,
-        # HTML parts to be loaded:
-        [String] $HTML_Header_Template_Path,
-        [String] $HTML_Body_Template_Path,
-        [String] $HTML_Footer_Template_Path,
-        # Modifiers:
-        # Number of posts defines how many times the body should be repeated in the final webpage
-        [int] $NumberOfPosts,
-        # Example: [Name="kokot",Value="kokos"]
-        # What will this^ do ? it will find every word kokot and replace it with kokos
-        [string] $HTML_Body_Regex,
-        # Where is the result is supposed to be saved:
-        [String] $Final_Page_Location
+        [Parameter(Mandatory=$true)] [string]$Title,
+        [Parameter(Mandatory=$true)] [string]$Username,
+        [Parameter(Mandatory=$true)] [string]$Text,
+        [Parameter(Mandatory=$true)] [string]$ENV
     )
-    #Load templates from folder:
-    $js = GetFromFile -RawUrl $JS_Template_Path -Surround "script"
-    $css = GetFromFile -RawUrl $CSS_Template_Path -Surround "style"
-    $html_header = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
-    $html_body = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
-    $html_footer = GetFromFile -RawUrl $HTML_Header_Template_Path -Surround ""
+    $HTML_URL = "$($ENV)data/template/page.html"
+    $STYLE_URL = "$($ENV)data/template/style.css"
+    $SCRIPT_URL = "$($ENV)data/template/script.js"
+
+    $HTML += GetFromFile -RawUrl $HTML_URL
+    $HTML = $HTML.Replace("{{title}}", $Title)
+    $HTML = $HTML.Replace("{{username}}", $Username)
+    $HTML = $HTML.Replace("{{text}}", $Text)
+    $HTML += GetFromFile -RawUrl $STYLE_URL -Surround "style"
+    $HTML += GetFromFile -RawUrl $SCRIPT_URL -Surround "script"
+    
+    return $HTML
 }
 
 function GetFromFile {
-    param ($RawUrl, $Surround)
-    $raw = Get-Content -Raw $location
+    param (
+        [Parameter(Mandatory=$true)] [string]$RawUrl,
+        [string]$Surround = ""
+    )
+    $raw = Get-Content -Raw $RawUrl
     if($Surround -ne "") {
         $return = "<" + $Surround + ">" + $raw + "</" + $Surround + ">"
     } else {
@@ -36,4 +34,5 @@ function GetFromFile {
     return $return
 }
 
+Export-ModuleMember -Function GetFromFile
 Export-ModuleMember -Function ConstructHTML

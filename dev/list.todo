@@ -1,0 +1,24 @@
+✔ Write body constructor @done (15/09/2022, 19:39:21)
+✔ Construct body with values @done (15/09/2022, 19:39:24)
+✔ add one piece of header then all bodies and then one footer, put into oven and bake for 10 minutes at 180deg C @done (15/09/2022, 19:39:27)
+✔ Test WebsiteConstructor.psm1 @done (15/09/2022, 20:10:21)
+✔ Fix file load problem thingy >:( @done (29/09/2022, 21:54:41)
+✔ Create installer for dependencies! @done (29/09/2022, 21:54:46)
+✘ Test Installer.ps1 @cancelled (10/10/2022, 19:11:41)
+✔ Save final html to files @done (06/10/2022, 19:55:04)
+✔ Remove Return from WebsiteConstructor @done (06/10/2022, 18:33:14)
+✔ BUG: WebsiteConstructor is repeating header and not body. @done (29/09/2022, 22:17:37)
+✔ BUG: WebsiteConstructor RegexString doesn't affect returned body! @done (29/09/2022, 23:17:07)
+✔ BUG: web is not displaying body @done (29/09/2022, 23:36:55)
+✔ Write Manifest.json @done (30/09/2022, 22:36:37)
+✔ BUG: For some reason the server doesnt start @done (30/09/2022, 22:35:52)(Fixed by restarting VS Code ... the fuck ? XD)
+✔ Make [WebsiteConstructor; ConstructHTML] input a single HTML template location and split it via regex to header, body and a footer @done (10/10/2022, 19:07:09)
+✔ BUG: [WebsiteConstructor; ConstructHTML] does not regex body string. it outputs one "cow" value instad of what is supposed to be replaced @done (10/10/2022, 18:52:51)
+✘ BUG: in unit_test.ps1 when importing all modules it does not recognise ConstructHTML as a function or a cmdlet @cancelled (01/11/2022, 21:43:21)
+✘ BUG: [RequestHandler; HandleGET] Can't find baked website @cancelled (01/11/2022, 21:43:30)
+✔ Handle POST requests @done (4. 11. 2022 12:06:54)
+☐ Clean up POST requests from possible SQL and XSS injection attacks
+☐ make a better looking website
+☐ make a SQL database
+☐ connect to SQL database
+☐ load and bake a website with data loaded from SQL database
